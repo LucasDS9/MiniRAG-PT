@@ -16,9 +16,13 @@ Os seguintes modelos de linguagem foram utilizados no projeto:
 Usado para calcular métricas padrões de llms.
 **Resultados :**
 Mean F1@3: 0.5111
+
 Mean MRR: 1.0000
+
 Mean nDCG@3: 0.6941
+
 Latência média: 4.329614
+
 **queries** : "Explique como a IA usa matemática para processar informação",
     "Como redes neurais artificiais se inspiram no cérebro humano?",
     "Quais tarefas as máquinas realizam melhor que os humanos?"
@@ -26,6 +30,18 @@ Latência média: 4.329614
 {'relevancia': {'relevancia': 8}, 'fidelidade': {'fidelidade': 8}, 'correcao': {'correcao': 9}, 'completude': {'completude': 8.5}}
 Para a query **"Explique redes neurais"**
 
+
+- **TinyLlama/TinyLlama-1.1B-Chat-v1.0** : Utilizado para verificar métricas BLEU e ROUGE.
+
+BLEU médio: 0.2255
+
+ROUGE-1 médio: 0.5746
+
+ROUGE-2 médio: 0.4078
+
+ROUGE-L médio: 0.527
+
+para as queries : "Quais são os pontos em comum entre humanos e máquinas?" e "A maquina tem metacognição?"
 
 
 
