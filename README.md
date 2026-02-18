@@ -15,6 +15,7 @@ Os seguintes modelos de linguagem foram utilizados no projeto:
 - **Qwen/Qwen2.5-0.5B-Instruct**: utilizado como modelo gerador (LLM) responsável por produzir a resposta final em linguagem natural. Ele recebe o contexto recuperado do banco vetorial junto com a pergunta do usuário e gera uma resposta coerente, objetiva e em português. É o componente responsável pela etapa de *Generation* na arquitetura RAG.
 Usado para calcular métricas padrões de llms.
 **Resultados :**
+
 Mean F1@3: 0.5111
 
 Mean MRR: 1.0000
@@ -28,6 +29,7 @@ Latência média: 4.329614
     "Quais tarefas as máquinas realizam melhor que os humanos?"
 
 {'relevancia': {'relevancia': 8}, 'fidelidade': {'fidelidade': 8}, 'correcao': {'correcao': 9}, 'completude': {'completude': 8.5}}
+
 Para a query **"Explique redes neurais"**
 
 
