@@ -1,173 +1,170 @@
-# 📄 Mini RAG PRO – Sistema de Perguntas e Respostas com RAG
+# 📄 Mini RAG PRO — Sistema de Perguntas e Respostas com RAG
 
-## 🏹 Visão Geral
+> Sistema completo de **Retrieval-Augmented Generation (RAG)** desenvolvido em Python que permite realizar perguntas sobre documentos PDF utilizando embeddings semânticos, banco vetorial persistente, re-ranking neural e Large Language Models para geração de respostas contextualizadas em português.
 
-O Mini RAG PRO é um sistema completo de Retrieval-Augmented Generation (RAG) desenvolvido em Python que permite realizar perguntas sobre documentos PDF utilizando embeddings semânticos, banco vetorial persistente, re-ranking neural e Large Language Models para geração de respostas contextualizadas em português.
-
-O projeto implementa uma arquitetura moderna de IA generativa semelhante às utilizadas em aplicações reais como assistentes corporativos, sistemas jurídicos, buscadores semânticos e chatbots especializados em documentos. Ele cobre todo o ciclo de vida de um sistema RAG: ingestão de documentos, chunking adaptativo, geração de embeddings, indexação vetorial, recuperação semântica, re-ranking, geração de resposta e avaliação quantitativa.
-
-A arquitetura integra ferramentas essenciais do ecossistema moderno de NLP. O ChromaDB é utilizado como banco vetorial persistente para indexação e busca por similaridade semântica. O LangChain Text Splitters é utilizado para realizar chunking adaptativo de documentos, garantindo melhor granularidade na recuperação. A biblioteca Transformers é responsável pelo carregamento e execução dos modelos generativos.
-
-Os seguintes modelos de linguagem foram utilizados no projeto:
-
-- **all-MiniLM-L6-v2**: utilizado para gerar embeddings densos tanto dos chunks dos documentos quanto das perguntas do usuário. Esses vetores semânticos permitem calcular similaridade e recuperar os trechos mais relevantes no ChromaDB, compondo a etapa de *Retrieval* do sistema.
-
-- **Qwen/Qwen2.5-0.5B-Instruct**: utilizado como modelo gerador (LLM) responsável por produzir a resposta final em linguagem natural. Ele recebe o contexto recuperado do banco vetorial junto com a pergunta do usuário e gera uma resposta coerente, objetiva e em português. É o componente responsável pela etapa de *Generation* na arquitetura RAG.
-Usado para calcular métricas padrões de llms.
-**Resultados :**
-
-Mean F1@3: 0.5111
-
-Mean MRR: 1.0000
-
-Mean nDCG@3: 0.6941
-
-Latência média: 4.329614
-
-**queries** : "Explique como a IA usa matemática para processar informação",
-    "Como redes neurais artificiais se inspiram no cérebro humano?",
-    "Quais tarefas as máquinas realizam melhor que os humanos?"
-
-{'relevancia': {'relevancia': 8}, 'fidelidade': {'fidelidade': 8}, 'correcao': {'correcao': 9}, 'completude': {'completude': 8.5}}
-
-Para a query **"Explique redes neurais"**
-
-
-- **TinyLlama/TinyLlama-1.1B-Chat-v1.0** : Utilizado para verificar métricas BLEU e ROUGE.
-
-BLEU médio: 0.2255
-
-ROUGE-1 médio: 0.5746
-
-ROUGE-2 médio: 0.4078
-
-ROUGE-L médio: 0.527
-
-para as queries : "Quais são os pontos em comum entre humanos e máquinas?" e "A maquina tem metacognição?"
-
-
+🌐 **[Acesse o portfólio](https://LucasDS9.github.io)** · 🚀 **[Testar o modelo](https://huggingface.co/spaces/LucasDS9/MiniRAG-PT)**
 
 ---
 
-## 🎯 Importância do Projeto
+## 💼 Aplicações Reais
 
-Este projeto demonstra domínio prático de arquitetura RAG moderna, combinando conceitos de NLP, embeddings densos, vector databases, re-ranking neural e Large Language Models. Diferente de implementações simplificadas, ele inclui um módulo estruturado de avaliação com métricas clássicas de Information Retrieval como Precision@K, Recall@K, F1@K, NDCG@K, MMR e também avaliação com LLM como juiz.
-
-A presença desse módulo de avaliação é um diferencial relevante para aplicações profissionais, pois evidencia preocupação com qualidade de recuperação, mensuração objetiva de performance e análise crítica do sistema. Isso aproxima o projeto de ambientes reais de produção e pesquisa aplicada em IA.
+| Caso de uso | Descrição |
+|---|---|
+| 🏢 Assistentes corporativos | Q&A sobre documentos internos, manuais e políticas |
+| ⚖️ Sistemas jurídicos | Consulta semântica sobre contratos, legislações e pareceres |
+| 🔍 Buscadores semânticos | Recuperação inteligente em bases de conhecimento |
+| 🤖 Chatbots especializados | Atendimento automatizado com base em documentação própria |
 
 ---
 
-## ⚙️ Requisitos e Como Rodar
+## 📌 Sobre o Projeto
+
+O Mini RAG PRO cobre todo o ciclo de vida de um sistema RAG: **ingestão de documentos, estratégias de chunking, geração de embeddings semânticos, indexação vetorial com ChromaDB, recuperação por similaridade, re-ranking neural, geração de resposta com LLM e avaliação quantitativa completa**.
+
+A arquitetura implementada se aproxima dos padrões utilizados em aplicações reais de IA generativa, com atenção especial à qualidade da recuperação e à avaliação objetiva do sistema — diferenciais relevantes em contextos profissionais e de pesquisa aplicada.
+
+**Modelos utilizados:**
+
+- **all-MiniLM-L6-v2** — geração de embeddings densos para chunks e perguntas via SentenceTransformers, compondo a etapa de *Retrieval*
+- **Qwen/Qwen2.5-1.5B-Instruct** — modelo gerador responsável pela etapa de *Generation*, produzindo respostas coerentes e objetivas em português com base no contexto recuperado
+- **cross-encoder/ms-marco-MiniLM-L-6-v2** — re-ranking neural dos chunks recuperados para maximizar a relevância do contexto enviado ao LLM
+- **Qwen/Qwen2.5-0.5B-Instruct** — utilizado no `evaluation.ipynb` como juiz (LLM-as-Judge) pelo baixo custo computacional. Vale destacar que **métricas como relevância, coerência e completude teriam scores mais altos com um modelo juiz mais robusto** — o 0.5B representa um limite inferior conservador de avaliação
+
+---
+
+## 📁 Estrutura do Projeto
+
+```text
+📦 MiniRAG-PT
+├── 📁 data
+│   ├── uploads/          # PDFs enviados pelo usuário
+│   └── vector_db/        # Banco vetorial persistente (ChromaDB)
+│
+├── 📁 rag
+│   ├── embedding.py      # Carregamento e geração de embeddings
+│   ├── ingestion.py      # Ingestão e chunking adaptativo
+│   ├── llm.py            # Carregamento e geração de respostas com LLM
+│   ├── pipeline.py       # Pipeline RAG modular
+│   └── vectorstore.py    # Integração com ChromaDB
+│
+├── app.py                # Interface Gradio
+├── evaluation.ipynb      # Avaliação completa do sistema RAG
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🧱 Etapas do Projeto
+
+### 1️⃣ Ingestão de documentos
+- Leitura de documentos PDF com **PyPDF2**
+- Extração e limpeza do texto por página
+
+### 2️⃣ Estratégias de chunking
+- **Chunking adaptativo** via **LangChain RecursiveCharacterTextSplitter**: tamanho dos chunks e overlap definidos dinamicamente com base na estrutura média do texto, garantindo melhor granularidade na recuperação
+- O notebook de avaliação explora e compara **diferentes estratégias** — chunk_size, overlap variável, chunking semântico e chunking por sentença — analisando o impacto de cada abordagem nas métricas de retrieval
+
+### 3️⃣ Geração de embeddings e indexação vetorial
+- Transformação dos chunks em **vetores semânticos densos** com **SentenceTransformers (all-MiniLM-L6-v2)**
+- Indexação e persistência no **ChromaDB** (banco vetorial local)
+- Busca por **cosine similarity** entre o embedding da pergunta e os chunks indexados
+
+### 4️⃣ Recuperação e re-ranking
+- Consulta vetorial retorna os `n` chunks mais similares à pergunta do usuário
+- **MMR (Maximal Marginal Relevance)** no pipeline de avaliação para diversificar os chunks e reduzir redundância
+- **CrossEncoder (ms-marco-MiniLM-L-6-v2)** realiza re-ranking neural para selecionar os chunks mais relevantes antes de enviar ao LLM
+
+### 5️⃣ Geração de resposta
+- **Qwen2.5-1.5B-Instruct** recebe o contexto re-rankeado e a pergunta do usuário
+- Instrução explícita via prompt para responder sempre em português, com base exclusiva no contexto fornecido
+- Suporte a quantização 4-bit em GPU via **BitsAndBytesConfig** para redução de uso de memória
+
+### 6️⃣ Avaliação quantitativa — `evaluation.ipynb`
+
+O notebook de avaliação é um **diferencial técnico relevante** do projeto. Implementa um pipeline completo de avaliação RAG cobrindo desde o chunking até métricas de geração:
+
+**Fluxo:** Documentos → Chunking → Embeddings → ChromaDB → Retrieval → Reranking (MMR) → Prompt → LLM → Avaliação
+
+- **Chunking strategies:** comparação entre diferentes configurações de chunk_size, overlap, chunking semântico e por sentença
+- **Métricas de Retrieval (IR):** Recall@K, Precision@K, F1@K, NDCG@K, MRR
+- **Similaridade semântica:** cosine similarity entre resposta gerada e contexto recuperado
+- **LLM-as-Judge:** avaliação automática de relevância, fidelidade, correção e completude usando **Qwen 0.5B** como juiz
+- **Métricas de geração:** BLEU e ROUGE calculados com **Qwen 1.5B (Hugging Face)**
+- **Prompt Engineering:** variação e controle de instruções para análise do impacto no output
+
+> ⚠️ Os scores do LLM-as-Judge foram obtidos com **Qwen 0.5B**, modelo de baixo custo computacional. Um modelo juiz mais robusto produziria avaliações mais precisas e scores potencialmente mais altos — os resultados atuais representam um limite inferior conservador.
+
+---
+
+## 📊 Resultados da Avaliação
+
+### Métricas de Retrieval (Information Retrieval)
+
+| Métrica | Valor |
+|---|---|
+| Mean F1@3 | 0.5111 |
+| Mean MRR | 1.0000 |
+| Mean nDCG@3 | 0.6941 |
+| Latência média | 4.33s |
+
+### LLM-as-Judge — query: *"Explique redes neurais"*
+
+| Dimensão | Score (0–10) |
+|---|---|
+| Relevância | 8 |
+| Fidelidade | 8 |
+| Correção | 9 |
+| Completude | 8.5 |
+
+### Métricas BLEU e ROUGE
+
+Calculadas com **Qwen 1.5B (Hugging Face)** para as queries:
+*"Quais são os pontos em comum entre humanos e máquinas?"* e *"A máquina tem metacognição?"*
+
+| Métrica | Valor |
+|---|---|
+| BLEU médio | 0.2255 |
+| ROUGE-1 médio | 0.5746 |
+| ROUGE-2 médio | 0.4078 |
+| ROUGE-L médio | 0.5270 |
+
+---
+
+## 🚀 Como Rodar Localmente
 
 Recomenda-se Python 3.10 ou superior.
 
-Instale as dependências com:
-
 ```bash
 pip install -r requirements.txt
+python app.py
 ```
 
-Principais bibliotecas necessárias:
+Após executar, a aplicação abrirá no navegador via Gradio. O fluxo consiste em enviar PDFs, processar os documentos e realizar perguntas sobre o conteúdo indexado.
 
-- sentence-transformers  
-- transformers  
-- torch  
-- chromadb  
-- streamlit  
-- PyPDF2  
-- langchain-text-splitters  
-- scikit-learn  
-- numpy  
-- pandas  
-
-Para melhor desempenho, recomenda-se utilização de GPU ao carregar modelos maiores.
-
-### Executar localmente
-
-```bash
-streamlit run app.py
-```
-
-Após executar, a aplicação abrirá automaticamente no navegador. O fluxo de uso consiste em enviar PDFs, processar os documentos e realizar perguntas sobre o conteúdo indexado.
-
----
-## 📁 Estrutura do Projeto
-```
-├── data
-│   ├── uploads/ # PDFs enviados pelo usuário
-│   ├── vector_db/ # Banco vetorial persistente (ChromaDB)
-│
-├── rag
-│   ├── embedding.py # Carregamento e geração de embeddings
-│   ├── ingestion.py # Ingestão e chunking adaptativo
-│   ├── llm.py # Carregamento e geração de respostas com LLM
-│   └── pipeline.py # Pipeline Mini RAG modular
-│   └── vectorstore.py # Integração com ChromaDB
-│
-├
-app.py # Interface Streamlit
-evaluation.ipynb # Avaliação do sistema (métricas IR + LLM as Judge)
-Pensamento_maquina.pdf # Documento exemplo para testes locais
-README.md #descrição do projeto
-requirements.txt # Dependências do projeto
-
-
-```
----
-
-## 🗃️ Descrição dos Módulos
-
-### embedding.py
-
-Responsável por carregar o modelo de embeddings utilizando SentenceTransformers e gerar vetores densos a partir dos chunks de texto. Utiliza por padrão o modelo `all-MiniLM-L6-v2`, equilibrando desempenho e eficiência computacional.
-
-### ingestion.py
-
-Gerencia o carregamento de documentos PDF ou TXT e implementa chunking adaptativo com RecursiveCharacterTextSplitter. O tamanho dos chunks é definido dinamicamente com base na estrutura média do texto, buscando melhorar a qualidade da recuperação semântica.
-
-### llm.py
-
-Carrega o modelo generativo (Qwen Instruct por padrão) e implementa a geração de respostas condicionadas ao contexto recuperado. Utiliza template de chat e instrução explícita para responder sempre em português.
-
-### vectorstore.py
-
-Realiza a integração com o ChromaDB como banco vetorial persistente. Permite criar collections, adicionar documentos com embeddings e realizar consultas por similaridade vetorial.
-
-### pipeline.py
-
-Define o fluxo modular do Mini RAG. Gera embedding da pergunta, consulta o banco vetorial, constrói o contexto a partir dos chunks recuperados e chama o LLM para gerar a resposta final.
-
-### app.py
-
-Interface interativa construída com Streamlit. Permite upload de múltiplos PDFs, indexação automática, re-ranking com CrossEncoder, geração de respostas com efeito de streaming e persistência dos dados no ChromaDB.
-
-### evaluation.ipynb
-
-Módulo de avaliação do sistema. Implementa métricas de recuperação como Cosine Similarity, Precision@K, Recall@K, F1@K, NDCG@K e MMR, além de avaliação utilizando LLM como juiz para análise qualitativa das respostas geradas. Representa um diferencial técnico relevante do projeto.
+> Para melhor desempenho na geração de respostas, recomenda-se uso de **GPU**.
 
 ---
 
-## 🛠️ Ferramentas Utilizadas
+## 🚀 Conclusão
 
-| Ferramenta | Finalidade |
-|------------|------------|
-| Python | Linguagem principal |
-| SentenceTransformers | Geração de embeddings densos |
-| Transformers (HuggingFace) | Carregamento do LLM |
-| Qwen Instruct | Modelo gerador de respostas |
-| ChromaDB | Banco vetorial persistente |
-| CrossEncoder | Re-ranking neural |
-| LangChain Text Splitters | Chunking adaptativo |
-| PyPDF2 | Extração de texto de PDFs |
-| Streamlit | Interface web |
-| HuggingFace Spaces | Deploy da aplicação |
-| Scikit-learn | Métricas e similaridade cosseno |
+O Mini RAG PRO demonstra conhecimento sólido em NLP, embeddings semânticos, estratégias de chunking, recuperação vetorial, re-ranking neural e integração prática com Large Language Models. O pipeline de avaliação estruturado — cobrindo chunking strategies, métricas de IR, LLM-as-Judge, BLEU e ROUGE — é um diferencial que aproxima o projeto de padrões utilizados em ambientes reais de produção e pesquisa aplicada em IA generativa.
 
 ---
 
-## Conclusão
+## 🛠 Tecnologias Utilizadas
 
-O Mini RAG PRO é um projeto completo que implementa uma arquitetura moderna de Retrieval-Augmented Generation com pipeline estruturado, banco vetorial persistente, re-ranking neural e módulo robusto de avaliação quantitativa e qualitativa.
-
-O sistema demonstra conhecimento sólido em NLP, embeddings densos, recuperação semântica, métricas de Information Retrieval e integração prática com Large Language Models, aproximando-se de padrões utilizados em aplicações reais de IA generativa.
-
+| Tecnologia | Função |
+|---|---|
+| 🐍 **Python** | Linguagem principal do projeto |
+| 🔤 **SentenceTransformers (all-MiniLM-L6-v2)** | Geração de embeddings semânticos densos |
+| 🗄️ **ChromaDB** | Banco vetorial persistente para indexação e busca |
+| 🔁 **CrossEncoder (ms-marco-MiniLM-L-6-v2)** | Re-ranking neural dos chunks recuperados |
+| 🤖 **Qwen2.5-1.5B-Instruct** | Modelo gerador de respostas (LLM principal) |
+| 🧪 **Qwen2.5-0.5B-Instruct** | LLM-as-Judge no pipeline de avaliação |
+| 📊 **Qwen 1.5B (Hugging Face)** | Cálculo de métricas BLEU e ROUGE |
+| ✂️ **LangChain Text Splitters** | Chunking adaptativo de documentos |
+| 📄 **PyPDF2** | Extração de texto de PDFs |
+| 📐 **Scikit-learn** | Métricas de IR e similaridade cosseno |
+| 🚀 **Gradio** | Interface web da aplicação |
+| 🤗 **Hugging Face Spaces** | Deploy e hospedagem |
